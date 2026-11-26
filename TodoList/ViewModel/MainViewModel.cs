@@ -1,23 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 
 namespace TodoList.ViewModel {
-    public class MainViewModel : INotifyPropertyChanged {
-        string text;
-        public string Text {
-            get => text;
-            set {
-                text = value;
-                OnPropertyChanged(nameof(text));
-            }
+    public partial class MainViewModel : ObservableObject {
+
+        public MainViewModel() {
+            Items = new ObservableCollection<string>();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        void OnPropertyChanged(string name) {
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-            } }
+        [ObservableProperty]
+        ObservableCollection<string> items;
+
+        [ObservableProperty]
+        string text;
+
+        [RelayCommand]
+        void Add() {
+            if (string.IsNullOrEmpty(text))
+                return;
+
+            items.Add(Text);
+            Text = string.Empty;
+        }
+
+        [RelayCommand]
+        void Delete(string s) {
+            if (Items.Contains(s)) {
+                Items.Remove(s);     
+            }
+        }
     }
 }
