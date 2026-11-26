@@ -13,7 +13,10 @@ namespace TodoList {
                 });
 
             builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddTransient<DetailPage>();
+
             builder.Services.AddSingleton<MainViewModel>();
+            builder.Services.AddTransient<DetailViewModel>();
 
             return builder.Build();
         }
