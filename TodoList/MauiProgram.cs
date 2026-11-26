@@ -18,6 +18,8 @@ namespace TodoList {
             builder.Services.AddSingleton<MainViewModel>();
             builder.Services.AddTransient<DetailViewModel>();
 
+            builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
+
             return builder.Build();
         }
     }

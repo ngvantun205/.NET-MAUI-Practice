@@ -4,9 +4,11 @@ using System.Collections.ObjectModel;
 
 namespace TodoList.ViewModel {
     public partial class MainViewModel : ObservableObject {
+        IConnectivity connectivity;
 
-        public MainViewModel() {
+        public MainViewModel(IConnectivity connectivity) {
             Items = new ObservableCollection<string>();
+            this.connectivity = connectivity;
         }
 
         [ObservableProperty]
@@ -16,13 +18,21 @@ namespace TodoList.ViewModel {
         string text;
 
         [RelayCommand]
-        void Add() {
+        async Task Add() {
             if (string.IsNullOrEmpty(text))
                 return;
+
+            if(connectivity.NetworkAccess != NetworkAccess.Internet) {
+                await Shell.Current.DisplayAlert("Uh Oh!", "No Internet", "OK");
+                return;
+            }
 
             items.Add(Text);
             Text = string.Empty;
         }
+
+
+        
 
         [RelayCommand]
         void Delete(string s) {
